@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Science news scraper</title>
+</head>
+<body>
+    <h1>Latest news from Eurekalert!</h1>
+    {% for news in content %}
+        <p>
+            <a href={{content[news]}}>
+                {{news}}
+            </a>
+        </p>
+    {% endfor %}
+</body>
+</html>
