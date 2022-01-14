@@ -28,7 +28,12 @@ def initialise_news_object():
 
 @app.route("/")
 def home_page():
-    return render_template("index.html", content=news_stories)
+    return render_template("index.html")
+
+@app.route("/eurekalert")
+def eurekalert_page():
+    return render_template("eurekalert.html", content=news_stories)
+
 
 
 if __name__ == "__main__":
