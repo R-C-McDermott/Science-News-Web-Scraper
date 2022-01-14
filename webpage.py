@@ -33,4 +33,4 @@ def home_page():
 
 if __name__ == "__main__":
     news_stories = initialise_news_object()
-    app.run()
+    app.run(debug=True)
