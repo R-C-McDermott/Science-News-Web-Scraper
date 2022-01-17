@@ -1,39 +1,34 @@
 from bs4 import BeautifulSoup
-from datetime import datetime
 import requests
 
 
 class NewsStories:
-    def __init__(self):
-        self.day = None
-        self.month = None
-        self.year = None
-
-    # Returns today's date required for latest news in 'Eurek Alert' url
-    def set_date(self):
-        self.year, self.month, self.day = datetime.today().strftime('%Y-%m-%d').split("-")
+    def __init__(self, base_url, latest_news_url, article_class_tag,
+                 article_class_name, title_tag, title_tag_name, link_tag):
+        self.base_url = base_url
+        self.latest_news_url = latest_news_url
+        self.article_class_tag = article_class_tag
+        self.article_class_name = article_class_name
+        self.title_tag = title_tag
+        self.title_tag_name = title_tag_name
+        self.link_tag = link_tag
 
     def get_news(self):
-        # News website base url and latest news url
-        base_url = "https://www.eurekalert.org"
-        url_eurek_alert = f"https://www.eurekalert.org/news-releases/" \
-                          f"browse?view=titles&date={self.month}/{self.day}/{self.year}"
-
-        r = requests.get(url_eurek_alert)
+        r = requests.get(self.latest_news_url)
         html = r.content
         bs = BeautifulSoup(html, 'html.parser')
 
         # Find all article sections corresponding to individual stories
-        articles = bs.find_all('article', class_='post')
+        articles = bs.find_all(self.article_class_tag, class_=self.article_class_name)
         titles, links = [], []
 
         # Extract title and link for each article section in the html code
         for article in articles:
-            title_tags = article.find_all('h2', class_='post_title')
-            link_tags = article.find_all('a', href=True)
+            title_tags = article.find_all(self.title_tag, class_=self.title_tag_name)
+            link_tags = article.find_all(self.link_tag, href=True)
 
             titles.append(title_tags)
-            links.append([(base_url + link.get('href')) for link in link_tags])
+            links.append([(self.base_url + link.get('href')) for link in link_tags])
 
         reform_titles = [title[0].get_text() for title in titles]
         reform_links = [link[0] for link in links]
