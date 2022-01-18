@@ -7,9 +7,13 @@ Latest news from Nature
 <br>
 <ul>
     {% for news in content %}
-        <li><a href={{content[news]}} target="_blank">
+        <li><a href={{content[news][0]}} target="_blank" id="news-link">
             {{news}}
-        </a></li>
+        </a>
+        {% if content[news][1] != '' %}
+            <p id="news-summary">{{content[news][1]}}</p>
+        {% endif %}
+        </li>
     {% endfor %}
 </ul>
 {% endblock %}

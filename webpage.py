@@ -9,6 +9,10 @@ so far:
 
 to-do:
 - Add abstracts to be displayed under each news story.
+- Add more news websites
+- Old news stories appended to database
+- Comment tab for each news story -> linked to database
+- Website login -> linked to database
 
 """
 
@@ -26,24 +30,26 @@ app = Flask(__name__)
 def initialise_eukeralert_news_object():
     news_object = NewsStories(base_url="https://www.eurekalert.org",
                               latest_news_url=f"https://www.eurekalert.org/news-releases/" \
-                                              f"browse?view=titles&date={month}/{day}/{year}",
-                              article_class_tag='article',
-                              article_class_name='post',
+                                              f"browse?view=summaries&date={month}/{day}/{year}",
+                              article_tag='article',
+                              article_class='post',
                               title_tag='h2',
-                              title_tag_name='post_title',
-                              link_tag='a')
+                              title_class='post_title',
+                              summary_tag='p',
+                              summary_class='intro')
     return news_object.get_news()
 
 
 def initialise_nature_news_object():
     news_object = NewsStories(base_url="https://www.nature.com",
                               latest_news_url="https://www.nature.com/latest-news",
-                              article_class_tag='li',
-                              article_class_name=['u-flex-row__item u-flex-row__item--span-1',
-                                                  'c-article-list__item u-flex-list__item cleared'],
+                              article_tag='li',
+                              article_class=['u-flex-row__item u-flex-row__item--span-1',
+                                             'c-article-list__item u-flex-list__item cleared'],
                               title_tag='h3',
-                              title_tag_name='c-article-item__title mb10',
-                              link_tag='a')
+                              title_class='c-article-item__title mb10',
+                              summary_tag='p',
+                              summary_class=None)
     return news_object.get_news()
 
 
