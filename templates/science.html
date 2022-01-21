@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+Latest news from Science.org
+{% endblock %}
+{% block content %}
+<h1>Latest news from Science.org!</h1>
+<br>
+<ul>
+    {% for news in content %}
+        <li><a href={{content[news][0]}} target="_blank" id="news-link">
+            {{news}}
+        </a>
+        <p id="news-summary">{{content[news][1]}}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -6,10 +6,9 @@ so far:
 - Developed a webpage for the information to be displayed and accessed (using Flask).
 - Can scrape from more than one website.
 - Constructed home page with nav-bar leading to different pages depending on which news website you want.
-
+- Abstracts displayed under each news story if they exist.
+- Currently works for three individual websites.
 to-do:
-- Add abstracts to be displayed under each news story.
-- Add more news websites
 - Old news stories appended to database
 - Comment tab for each news story -> linked to database
 - Website login -> linked to database
@@ -36,7 +35,9 @@ def initialise_eukeralert_news_object():
                               title_tag='h2',
                               title_class='post_title',
                               summary_tag='p',
-                              summary_class='intro')
+                              summary_class='intro',
+                              embedded_title=False,
+                              link_class=None)
     return news_object.get_news()
 
 
@@ -49,7 +50,23 @@ def initialise_nature_news_object():
                               title_tag='h3',
                               title_class='c-article-item__title mb10',
                               summary_tag='p',
-                              summary_class=None)
+                              summary_class=None,
+                              embedded_title=False,
+                              link_class=None)
+    return news_object.get_news()
+
+
+def initialise_sciencedotorg_news_object():
+    news_object = NewsStories(base_url="https://www.science.org",
+                              latest_news_url="https://www.science.org/news/all-news",
+                              article_tag='article',
+                              article_class='card-do',
+                              title_tag='a',
+                              title_class='title',
+                              summary_tag='div',
+                              summary_class='card-body text-darker-gray',
+                              embedded_title=True,
+                              link_class='text-reset animation-underline')
     return news_object.get_news()
 
 
@@ -68,6 +85,12 @@ def eurekalert_page():
 def nature_page():
     news_stories = initialise_nature_news_object()
     return render_template("nature.html", content=news_stories)
+
+
+@app.route("/scienceorg")
+def scienceorg_page():
+    news_stories = initialise_sciencedotorg_news_object()
+    return render_template("science.html", content=news_stories)
 
 
 if __name__ == "__main__":
